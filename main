@@ -1,0 +1,209 @@
+#include <iostream>
+#include <Windows.h>
+#include <string>
+
+void CreateArrey(std::string B[9])
+{
+	int n = 9;
+
+	for (int i = 0; i < n; i++)
+	{
+		std::string stroke = " ";
+
+		B[i] = stroke;
+
+	}
+}
+
+void CreatePlayZone(std::string B[9])
+{
+	std::cout << "        " << "|" << B[0] << "|" << B[1] << "|" << B[2] << "|" << std::endl;
+	std::cout << "        " << "|" << "=|=|=|" << std::endl;
+	std::cout << "        " << "|" << B[3] << "|" << B[4] << "|" << B[5] << "|" << std::endl;
+	std::cout << "        " << "|" << "=|=|=|" << std::endl;
+	std::cout << "        " << "|" << B[6] << "|" << B[7] << "|" << B[8] << "|" << std::endl;
+}
+
+int CheckWinX(std::string B[9], int status_)
+{
+	if (B[0] == B[1] and B[1] == B[2] and B[2] == "x") // xxx
+	{
+		std::cout << "        " << "'X' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[3] == B[4] and B[4] == B[5] and B[5] == "x") // xxx
+	{
+		std::cout << "        " << "'X' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[6] == B[7] and B[7] == B[8] and B[8] == "x") // xxx
+	{
+		std::cout << "        " << "'X' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[0] == B[3] and B[3] == B[6] and B[6] == "x") // x
+	{														// x
+		std::cout << "        " << "'X' - win" << std::endl;				// x
+		status_ = 1;
+	}
+	else if (B[1] == B[4] and B[4] == B[7] and B[7] == "x") // x
+	{														// x
+		std::cout << "        " << "'X' - win" << std::endl;				// x
+		status_ = 1;
+	}
+	else if (B[2] == B[5] and B[5] == B[8] and B[8] == "x") // x
+	{														// x
+		std::cout << "        " << "'X' - win" << std::endl;				// x
+		status_ = 1;
+	}
+	else if (B[0] == B[4] and B[4] == B[8] and B[8] == "x") // diagonal
+	{
+		std::cout << "        " << "'X' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[2] == B[4] and B[4] == B[6] and B[6] == "x") // diagonal
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+
+	return status_;
+}
+
+int CheckWinY(std::string B[9], int status_)
+{
+	if (B[0] == B[1] and B[1] == B[2] and B[2] == "y") // yyy
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[3] == B[4] and B[4] == B[5] and B[5] == "y") // yyy
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[6] == B[7] and B[7] == B[8] and B[8] == "y") // yyy
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[0] == B[3] and B[3] == B[6] and B[6] == "y") // y
+	{														// y
+		std::cout << "        " << "'Y' - win" << std::endl;				// y
+		status_ = 1;
+	}
+	else if (B[1] == B[4] and B[4] == B[7] and B[7] == "y") // y
+	{														// y
+		std::cout << "        " << "'Y' - win" << std::endl;				// y
+		status_ = 1;
+	}
+	else if (B[2] == B[5] and B[5] == B[8] and B[8] == "y") // y
+	{														// y
+		std::cout << "        " << "'Y' - win" << std::endl;				// y
+		status_ = 1;
+	}
+	else if (B[0] == B[4] and B[4] == B[8] and B[8] == "y") // diagonal
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+	else if (B[2] == B[4] and B[4] == B[6] and B[6] == "y") // diagonal
+	{
+		std::cout << "        " << "'Y' - win" << std::endl;
+		status_ = 1;
+	}
+
+	return status_;
+}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	int mode = 0;
+	int status = 0;
+	std::string A[9];
+
+	CreateArrey(A);
+
+	while(status == 0)
+	{
+		CreatePlayZone(A);
+		if (CheckWinY(A, status) == 0)
+		{
+			if (mode == 0 or mode == 2 or mode == 4 or mode == 6 or mode == 8)
+			{
+				int proverka = 0;
+				while (proverka == 0)
+				{
+					int n = 0;
+					std::cout << "Ходит 'X' - выбирай клетку: ";
+					std::cin >> n;
+					n = n - 1;
+					if (A[n] == "x" or A[n] == "y")
+					{
+						std::cout << "Там уже стоит кто то" << std::endl;
+					}
+					else
+					{
+						A[n] = "x";
+						proverka = 1;
+					}
+				}
+
+				CheckWinX(A, status);
+
+				mode = mode + 1;
+			}
+		}
+
+		system("cls");
+
+		CreatePlayZone(A);
+
+		if (CheckWinX(A, status) == 0)
+		{
+			if (mode == 1 or mode == 3 or mode == 5 or mode == 7)
+			{
+				int proverka = 0;
+				while (proverka == 0)
+				{
+					int n = 0;
+					std::cout << "Ходит 'Y' - выбирай клетку: ";
+					std::cin >> n;
+					n = n - 1;
+					if (A[n] == "x" or A[n] == "y")
+					{
+						std::cout << "Там уже стоит кто то" << std::endl;
+					}
+					else
+					{
+						A[n] = "y";
+						proverka = 1;
+					}
+				}
+
+					CheckWinY(A, status);
+
+					mode = mode + 1;;
+				
+			}
+		}
+		if (mode == 9)
+		{
+			std::cout << "Ничья!" << std::endl;
+			status = 1;
+		}
+
+		system("cls");
+		
+		if (CheckWinX(A, status) == 1 or CheckWinY(A, status) == 1)
+		{
+			status = 1;
+		}
+	}
+
+	return 0;
+	system("PAUSE");
+}
